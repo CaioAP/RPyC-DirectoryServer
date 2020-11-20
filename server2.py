@@ -15,8 +15,11 @@ class DBList(rpyc.Service):
     return self.value
 
 if __name__ == "__main__":
-  server = ForkingServer(DBList, port = 50007)
+  server = ForkingServer(DBList, port = HOST2_PORT)
   conn = rpyc.connect(DIR_SERVER, DIR_PORT)
   my_addr = socket.gethostbyname(socket.gethostname())
-  print (conn.root.exposed_register('DBList', my_addr, HOST_PORT))
-  server.start()
+  (registered, message) = conn.root.exposed_register('DBList', my_addr, HOST2_PORT)
+  print (message)
+
+  if registered:
+    server.start()

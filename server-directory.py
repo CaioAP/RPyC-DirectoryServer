@@ -7,6 +7,7 @@ class Directory(rpyc.Service):
 
   def exposed_register(self, server_name, ip_address, port_number):
     message = 'Registration OK'
+    registered = True
 
     if server_name not in self.registry:
       self.registry[server_name] = (ip_address, port_number)
@@ -14,9 +15,10 @@ class Directory(rpyc.Service):
       self.registry[server_name] = (ip_address, port_number)
     else:
       message = 'Server name already exists!'
+      registered = False
 
     print (self.registry)
-    return message
+    return (registered, message)
 
   def exposed_unregister(self, server_name):
     if server_name in self.registry:

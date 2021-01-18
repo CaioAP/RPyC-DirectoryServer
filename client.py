@@ -2,7 +2,7 @@ import rpyc
 from constRPYC import * #-
 
 class Client:
-  conn_directory = rpyc.connect(DIR_SERVER, DIR_PORT) # Connect to the directory server
+  conn_directory = rpyc.connect(DIR_SERVER_ROOT, DIR_PORT) # Connect to the directory server
   (addr, port) = conn_directory.root.exposed_lookup('DBList')
   print (f'Address: {addr} - Port: {port}')
 

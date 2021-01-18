@@ -1,9 +1,9 @@
 import rpyc
 import socket
-from constRPYC import * #-
+from constRPYC import *
 from rpyc.utils.server import ForkingServer
 
-class DBList(rpyc.Service):
+class ApplicationServer3(rpyc.Service):
   value = []
 
   def exposed_append(self, data):
@@ -15,11 +15,11 @@ class DBList(rpyc.Service):
     return self.value
 
 if __name__ == "__main__":
-  server = ForkingServer(DBList, port = HOST_PORT)
-  conn = rpyc.connect(DIR_SERVER_ROOT, DIR_PORT)
+  server = ForkingServer(ApplicationServer3, port = APP_SERVER_3_PORT)
+  conn = rpyc.connect(DIR_SERVER_ROOT_ADDR, DIR_SERVER_ROOT_PORT)
   my_addr = socket.gethostbyname(socket.gethostname())
-  (registered, message) = conn.root.exposed_register('DBList', my_addr, HOST_PORT)
-  print (message)
+  (fully_qualified_name, error) = conn.root.exposed_register('Application_1', my_addr, APP_SERVER_3_PORT)
+  print(fully_qualified_name)
 
-  if registered:
+  if not error:
     server.start()

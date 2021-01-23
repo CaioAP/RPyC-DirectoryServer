@@ -1,22 +1,28 @@
+import sys
 import rpyc
 from constRPYC import *
 
 class Client:
-  servers_list = ['CounterTerrorist', 'Terrorist', 'Iluminados', 'Temidos', 'Neutros']
+  servers = []
 
-  conn_directory = rpyc.connect(DIR_SERVER_ROOT_ADDR, DIR_SERVER_ROOT_PORT)
+  args = sys.argv[1:]
+  for i in range(len(args)):
+      server_name = args[i]
+      servers.append(server_name)
 
-  for server in servers_list:
-    (address, error) = conn_directory.root.exposed_lookup(server)
+  for server in servers:
+    conn = rpyc.connect(ROOT_ADDR, ROOT_PORT)
+    response = conn.root.exposed_lookup(server)
+    print(response['message'])
 
-    if error:
-      print(address)
-    else:
-      (addr, port) = address
-      print (f'Address: {addr} - Port: {port}')
+    if response['success']:
+      (addr, port) = response['data']
+      conn = rpyc.connect(addr, port)
 
-      # if addr and port:
-      #   conn = rpyc.connect(addr, port)
-      #   conn.root.exposed_append(2)
-      #   conn.root.exposed_append(4)
-      #   print (conn.root.exposed_value())
+      if (server == 'TimeWeather:Time'):
+        print('Current time: ', conn.root.exposed_current_time())
+        print('Current time formatted: ', conn.root.exposed_current_time_formatted())
+      elif (server == 'TimeWeather:Weather'):
+        print('Current temperature: ', conn.root.exposed_current_temperature())
+      elif (server == 'Calculator:Sum'):
+        print(conn.root.exposed_sum(14, 9))

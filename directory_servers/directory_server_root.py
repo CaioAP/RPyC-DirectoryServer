@@ -21,11 +21,11 @@ class DirectoryServerRoot(rpyc.Service):
 
   def exposed_lookup(self, server_name):
     if (server_name.find(':') > 0):
-      return self.get_local_address(server_name)
+      dir_name = server_name.split(':')[0]
+      server_name = server_name.split(':')[1]
+      return self.get_global_address(dir_name, server_name)
     
-    dir_name = server_name.split(':')[0]
-    server_name = server_name.split(':')[1]
-    return self.get_global_address(dir_name, server_name)
+    return self.get_local_address(server_name)
       
 
   def exposed_unregister(self, server_name):
@@ -36,16 +36,10 @@ class DirectoryServerRoot(rpyc.Service):
       )
     
     del self.servers[server_name]
-    if (server_name not in self.servers):
-      return dict(
-        success = True,
-        message = f'Directory server {server_name} unregistered successfully'
-      )
-    else:
-      return dict(
-        success = False,
-        message = f'Error trying to unregister directory server {server_name}'
-      )
+    return dict(
+      success = True,
+      message = f'Directory server {server_name} unregistered successfully'
+    )
 
 
   def exposed_re_register(self, server_name, address):

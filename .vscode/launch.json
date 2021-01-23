@@ -10,7 +10,39 @@
       "request": "launch",
       "program": "${file}",
       "console": "integratedTerminal",
-      "args": ["CSGO", "127.0.0.1", "50006"]
+      "args": ["Time", "50006"]
+    },
+    {
+      "name": "directory_server_root",
+      "type": "python",
+      "request": "launch",
+      "program": "C:\\Projects\\RPyC-DirectoryServer\\directory_servers\\directory_server_root.py",
+      "console": "integratedTerminal",
+      "args": []
+    },
+    {
+      "name": "directory_server",
+      "type": "python",
+      "request": "launch",
+      "program": "C:\\Projects\\RPyC-DirectoryServer\\directory_servers\\directory_server.py",
+      "console": "integratedTerminal",
+      "args": ["TimeWeather", "50006"]
+    },
+    {
+      "name": "app_server_time",
+      "type": "python",
+      "request": "launch",
+      "program": "C:\\Projects\\RPyC-DirectoryServer\\application_servers\\application_server_time.py",
+      "console": "integratedTerminal",
+      "args": ["Time", "50007", "TimeWeather"]
+    },
+    {
+      "name": "client",
+      "type": "python",
+      "request": "launch",
+      "program": "C:\\Projects\\RPyC-DirectoryServer\\clients\\client.py",
+      "console": "integratedTerminal",
+      "args": ["TimeWeather", "Time", "TimeWeather:Time", "Weather", "TimeWeather:Weather"]
     }
   ]
 }
